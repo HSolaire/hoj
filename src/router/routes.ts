@@ -1,7 +1,18 @@
 import { RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 
-export const routes: Array<RouteRecordRaw> = [
+export const basicRoutes: Array<RouteRecordRaw> = [
+  {
+    path: "/noAuth",
+    name: "无权限",
+    component: () => import("../views/NoAuth.vue"),
+    meta: {
+      showInMenu: false,
+    },
+  },
+];
+
+export const menuRoutes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "浏览题目",
@@ -20,15 +31,4 @@ export const routes: Array<RouteRecordRaw> = [
       role: "admin",
     },
   },
-  {
-    path: "/noAuth",
-    name: "无权限",
-    component: () => import("../views/NoAuth.vue"),
-    meta: {
-      showInMenu: false,
-    },
-  },
 ];
-
-
-

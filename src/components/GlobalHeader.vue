@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { routes } from "@/router/routes";
+import { menuRoutes } from "@/router/routes";
 import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
@@ -48,7 +48,7 @@ const router = useRouter();
 const store = useStore();
 
 const visibleRoutes = computed(() => {
-  return routes.filter((item, idx) => {
+  return menuRoutes.filter((item, idx) => {
     return (
       (item.meta?.showInMenu ?? true) &&
       roleCheck(store.state.user.loginUser, item.meta?.role as string)
