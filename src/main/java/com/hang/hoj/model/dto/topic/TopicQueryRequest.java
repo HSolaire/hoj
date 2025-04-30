@@ -51,7 +51,7 @@ public class TopicQueryRequest extends PageRequest implements Serializable {
     /**
      * 题目创建者id
      */
-    private String userId;
+    private Long userId;
 
 
     private static final long serialVersionUID = 1L;

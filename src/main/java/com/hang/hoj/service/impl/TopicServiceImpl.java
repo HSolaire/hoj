@@ -98,7 +98,7 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic>
         String content = topicQueryRequest.getContent();
         List<String> tags = topicQueryRequest.getTags();
         String answer = topicQueryRequest.getAnswer();
-        String userId = topicQueryRequest.getUserId();
+        Long userId = topicQueryRequest.getUserId();
         String sortField = topicQueryRequest.getSortField();
         String sortOrder = topicQueryRequest.getSortOrder();
 
@@ -118,7 +118,7 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic>
         }
         queryWrapper.eq(ObjectUtils.isNotEmpty(id), "id", id);
         queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
-        QueryWrapper.eq("isDelete", false);
+        queryWrapper.eq("isDelete", false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
