@@ -16,10 +16,12 @@ import com.hang.hoj.model.vo.LoginUserVO;
 import com.hang.hoj.model.vo.UserVO;
 import com.hang.hoj.service.UserService;
 import com.hang.hoj.utils.SqlUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +31,6 @@ import org.springframework.util.DigestUtils;
 
 /**
  * 用户服务实现
- *
  */
 @Service
 @Slf4j
@@ -39,6 +40,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * 盐值，混淆密码
      */
     public static final String SALT = "hang";
+
+//    @Resource
+//    private RedisTemplate redisTemplate;
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
@@ -80,6 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request) {
+//        redisTemplate.opsForValue().set("token", "admin", 30, TimeUnit.SECONDS);
         // 1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
