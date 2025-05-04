@@ -47,12 +47,12 @@ public class TopicAddRequest implements Serializable {
     /**
      * 判题配置（json 对象）
      */
-    private String judgeConfig;
+    private List<JudgeConfig> judgeConfig;
 
     /**
      * 判题用例（json 对象）
      */
-    private String judgeCase;
+    private List<JudgeCase> judgeCase;
 
     private static final long serialVersionUID = 1L;
 }

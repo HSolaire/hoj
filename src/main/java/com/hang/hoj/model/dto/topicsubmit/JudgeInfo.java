@@ -20,7 +20,7 @@ public class JudgeInfo {
     private Long memory;
 
     /**
-     * 程序执行信息
+     * 程序执行信息 todo 未理解用意
      */
     private String message;
 

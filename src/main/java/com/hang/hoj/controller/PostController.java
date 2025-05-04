@@ -34,8 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
  * 帖子接口
  *
  */
-@RestController
-@RequestMapping("/post")
+//@RestController
+//@RequestMapping("/post")
 @Slf4j
 public class PostController {
 

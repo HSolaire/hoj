@@ -29,7 +29,7 @@ public class AuthInterceptor {
     private UserService userService;
 
     /**
-     * 执行拦截
+     * 执行拦截 重要
      *
      * @param joinPoint
      * @param authCheck

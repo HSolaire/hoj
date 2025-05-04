@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * 更新请求
- *
  */
 @Data
 public class TopicUpdateRequest implements Serializable {
@@ -53,12 +52,12 @@ public class TopicUpdateRequest implements Serializable {
     /**
      * 判题配置（json 对象）
      */
-    private String judgeConfig;
+    private List<JudgeConfig> judgeConfig;
 
     /**
      * 判题用例（json 对象）
      */
-    private String judgeCase;
+    private List<JudgeCase> judgeCase;
 
 
     private static final long serialVersionUID = 1L;

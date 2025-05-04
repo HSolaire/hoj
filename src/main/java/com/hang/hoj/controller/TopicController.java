@@ -2,6 +2,7 @@ package com.hang.hoj.controller;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import com.hang.hoj.annotation.AuthCheck;
 import com.hang.hoj.common.BaseResponse;
 import com.hang.hoj.common.DeleteRequest;
@@ -10,10 +11,7 @@ import com.hang.hoj.common.ResultUtils;
 import com.hang.hoj.constant.UserConstant;
 import com.hang.hoj.exception.BusinessException;
 import com.hang.hoj.exception.ThrowUtils;
-import com.hang.hoj.model.dto.topic.TopicAddRequest;
-import com.hang.hoj.model.dto.topic.TopicEditRequest;
-import com.hang.hoj.model.dto.topic.TopicQueryRequest;
-import com.hang.hoj.model.dto.topic.TopicUpdateRequest;
+import com.hang.hoj.model.dto.topic.*;
 import com.hang.hoj.model.entity.Topic;
 import com.hang.hoj.model.entity.User;
 import com.hang.hoj.model.vo.TopicVO;
@@ -29,7 +27,6 @@ import java.util.List;
 
 /**
  * 题目接口
- *
  */
 @RestController
 @RequestMapping("/topic")
@@ -62,11 +59,20 @@ public class TopicController {
         if (tags != null) {
             topic.setTags(JSONUtil.toJsonStr(tags));
         }
+
+        List<JudgeConfig> judgeConfig = topicAddRequest.getJudgeConfig();
+        if (judgeConfig != null) {
+            topic.setJudgeConfig(JSONUtil.toJsonStr(judgeConfig));
+        }
+
+        List<JudgeCase> judgeCase = topicAddRequest.getJudgeCase();
+        if (judgeCase != null) {
+            topic.setJudgeCase(JSONUtil.toJsonStr(judgeCase));
+        }
+
         topicService.validTopic(topic, true);
         User loginUser = userService.getLoginUser(request);
         topic.setUserId(loginUser.getId());
-//        topic.setFavourNum(0);
-//        topic.setThumbNum(0);
         boolean result = topicService.save(topic);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         long newTopicId = topic.getId();
@@ -116,6 +122,17 @@ public class TopicController {
         if (tags != null) {
             topic.setTags(JSONUtil.toJsonStr(tags));
         }
+
+        List<JudgeConfig> judgeConfig = topicUpdateRequest.getJudgeConfig();
+        if (judgeConfig != null) {
+            topic.setJudgeConfig(JSONUtil.toJsonStr(judgeConfig));
+        }
+
+        List<JudgeCase> judgeCase = topicUpdateRequest.getJudgeCase();
+        if (judgeCase != null) {
+            topic.setJudgeCase(JSONUtil.toJsonStr(judgeCase));
+        }
+
         // 参数校验
         topicService.validTopic(topic, false);
         long id = topicUpdateRequest.getId();
@@ -169,7 +186,7 @@ public class TopicController {
      */
     @PostMapping("/list/page/vo")
     public BaseResponse<Page<TopicVO>> listTopicVOByPage(@RequestBody TopicQueryRequest topicQueryRequest,
-            HttpServletRequest request) {
+                                                         HttpServletRequest request) {
         long current = topicQueryRequest.getCurrent();
         long size = topicQueryRequest.getPageSize();
         // 限制爬虫
@@ -188,7 +205,7 @@ public class TopicController {
      */
     @PostMapping("/my/list/page/vo")
     public BaseResponse<Page<TopicVO>> listMyTopicVOByPage(@RequestBody TopicQueryRequest topicQueryRequest,
-            HttpServletRequest request) {
+                                                           HttpServletRequest request) {
         if (topicQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

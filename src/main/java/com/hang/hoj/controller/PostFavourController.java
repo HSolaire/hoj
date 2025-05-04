@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
  * 帖子收藏接口
  *
  */
-@RestController
-@RequestMapping("/post_favour")
+//@RestController
+//@RequestMapping("/post_favour")
 @Slf4j
 public class PostFavourController {
 

@@ -20,6 +20,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic>
         implements TopicService {
 
+    @Resource
     private UserService userService;
 
 
@@ -127,7 +129,7 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic>
     @Override
     public TopicVO getTopicVO(Topic topic, HttpServletRequest request) {
         TopicVO topicVO = TopicVO.objToVo(topic);
-        long topicId = topic.getId();
+        // long topicId = topic.getId();
         // 1. 关联查询用户信息
         Long userId = topic.getUserId();
         User user = null;
