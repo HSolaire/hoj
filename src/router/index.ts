@@ -14,8 +14,6 @@ router.beforeEach((to, from, next) => {
       to.meta?.role ?? ROLE_ENUM.GUEST
     )
   ) {
-    console.log(store.state.user.loginUser?.userRole);
-    console.log("path", to.path, "role：", to.meta.role);
     next("/noAuth");
     return;
   }

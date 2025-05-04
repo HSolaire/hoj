@@ -26,13 +26,11 @@ export default {
 }
 
 #layout .header {
-  margin-bottom: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #layout .content {
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 24px 72px;
   background-color: #ccc;
 }
 

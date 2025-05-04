@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <BasicLayout />
+    <router-view />
   </div>
 </template>
 
@@ -10,5 +10,13 @@
 </style>
 
 <script setup lang="ts">
-import BasicLayout from "@/layouts/BasicLayout.vue";
+import { onMounted } from "vue";
+
+const doInit = () => {
+  console.log("欢迎！");
+};
+
+onMounted(() => {
+  doInit();
+});
 </script>
