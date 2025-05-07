@@ -11,9 +11,12 @@ import math from "@bytemd/plugin-math";
 import { Editor, Viewer } from "@bytemd/vue-next";
 import { defineProps, defineEmits } from "vue";
 
-const emit = defineEmits(["mdEditChange"]);
+const emit = defineEmits(["update:value"]);
 const props = defineProps({
-  value: String,
+  value: {
+    type: String,
+    default: "// Start edit...\n",
+  },
 });
 
 const plugins = [
@@ -24,7 +27,7 @@ const plugins = [
 ];
 
 const handleChange = (v: string) => {
-  emit("mdEditChange", v);
+  emit("update:value", v);
 };
 </script>
 

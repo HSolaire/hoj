@@ -8,5 +8,7 @@ import "@/access/permission.ts";
 import "bytemd/dist/index.css";
 import "highlight.js/styles/default.css";
 import "@/global.css";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
+import "@/utils/requests";
 
 createApp(App).use(store).use(router).use(ArcoVue).mount("#app");

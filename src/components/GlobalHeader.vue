@@ -52,11 +52,12 @@
 <script setup lang="ts">
 import { menuRoutes } from "@/router/routes";
 import { useRouter } from "vue-router";
-import { computed, ref } from "vue";
+import { computed, onBeforeUpdate, onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import roleCheck from "@/access/accessControl";
-import { UserControllerService } from "../../generated";
+import { UserControllerService } from "@/../generated";
 import { Message } from "@arco-design/web-vue";
+import { looseIndexOf } from "@vue/shared";
 
 const router = useRouter();
 const store = useStore();
@@ -70,16 +71,14 @@ const visibleRoutes = computed(() => {
   });
 });
 
-// const visibleRoutes = routes.filter((item, idx) => {
-//   return (
-//     (item.meta?.showInMenu ?? true) &&
-//     roleCheck(store.state.user.loginUser, item.meta?.role as string)
-//   );
-// });
-
 const selectKeys = ref(["/home"]);
-// 默认高亮 fixme 需要改成 afterEach，目前不清楚原因
-router.beforeEach((to) => {
+
+// todo 重要 仅刷新触发
+router.isReady().then(() => {
+  selectKeys.value = [router.currentRoute.value.path];
+});
+
+router.afterEach((to) => {
   selectKeys.value = [to.path];
 });
 

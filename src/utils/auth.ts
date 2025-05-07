@@ -1,15 +1,15 @@
 import Cookies from "js-cookie";
 
-const username = "username";
+const userKey = "username";
 
 export function getUser() {
-  return Cookies.get(username);
+  return Cookies.get(userKey);
 }
 
-export function setUser(username: string) {
-  return Cookies.set(username, username);
+export function setUser(userName: string) {
+  return Cookies.set(userKey, userName);
 }
 
 export function removeUser() {
-  return Cookies.remove(username);
+  return Cookies.remove(userKey);
 }

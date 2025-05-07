@@ -45,7 +45,7 @@ const form = reactive<FormData>({
   rememberMe: false,
 });
 
-const handleSubmit = (data: Event) => {
+const handleSubmit = () => {
   store
     .dispatch("user/loginHandle", form)
     .then((res) => {

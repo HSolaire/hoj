@@ -8,17 +8,4 @@ const router = createRouter({
   routes: [...basicRoutes, ...menuRoutes],
 });
 
-router.beforeEach((to, from, next) => {
-  if (
-    !store.state.user.loginUser?.userRole.includes(
-      to.meta?.role ?? ROLE_ENUM.GUEST
-    )
-  ) {
-    next("/noAuth");
-    return;
-  }
-  next();
-  return;
-});
-
 export default router;

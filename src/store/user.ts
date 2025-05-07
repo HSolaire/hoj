@@ -1,30 +1,32 @@
 import { StoreOptions } from "vuex";
 import { UserControllerService } from "@/../generated";
-import { Message } from "@arco-design/web-vue";
 import { roleGetAll } from "@/access/accessControl";
 import { setUser, getUser } from "@/utils/auth";
+import store from "@/store/index";
+import { Message } from "@arco-design/web-vue";
+import { updateScrollOffset } from "@arco-design/web-vue/es/tabs/utils";
 // getters
 
 export default {
   namespaced: true,
   // initial state
   state: () => ({
-    token: localStorage.getItem("token"),
+    token: "",
     loginUser: {
-      userName: getUser(),
+      userName: "",
       userRole: ["guest"],
     },
     all: [],
   }),
   // 执行异步操作，并且触发 mutations 的更改，支持异步
   actions: {
-    async loginHandle({ commit, state }, pyload) {
-      const res = await UserControllerService.userLoginUsingPost(pyload);
+    async loginHandle({ commit, state }, payload) {
+      const res = await UserControllerService.userLoginUsingPost(payload);
       return new Promise((resolve, reject) => {
         const data = res.data;
         setUser(data.userName as string);
         if (res.code == 0) {
-          commit("updateUser", {
+          commit("UPDATE_USER", {
             userName: data.userName,
             userRole: roleGetAll(data.userRole),
           });
@@ -34,10 +36,21 @@ export default {
         }
       });
     },
+    async resetLoginUser({ commit, state }, payload) {
+      const res = await UserControllerService.getLoginUserUsingGet();
+      if (res.code === 0) {
+        commit("UPDATE_USER", {
+          userName: res.data?.userName,
+          userRole: roleGetAll(res.data?.userRole as string),
+        });
+      } else {
+        Message.error(res.message as string);
+      }
+    },
   },
   // 修改状态变量，尽量同步
   mutations: {
-    updateUser(state, payload) {
+    UPDATE_USER(state, payload) {
       state.loginUser = payload;
     },
   },
