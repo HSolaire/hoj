@@ -43,18 +43,18 @@ public interface TopicSubmitService extends IService<TopicSubmit> {
      * 获取题目（当前用户）
      *
      * @param topicSubmit
-     * @param request
+     * @param loginUser
      * @return
      */
-    TopicSubmitVO getTopicSubmitVO(TopicSubmit topicSubmit, HttpServletRequest request);
+    TopicSubmitVO getTopicSubmitVO(TopicSubmit topicSubmit, User loginUser);
 
     /**
      * 分页获取题目封装
      *
      * @param topicSubmitPage
-     * @param request
+     * @param loginUser
      * @return
      */
-    Page<TopicSubmitVO> getTopicSubmitVOPage(Page<TopicSubmit> topicSubmitPage, HttpServletRequest request);
+    Page<TopicSubmitVO> getTopicSubmitVOPage(Page<TopicSubmit> topicSubmitPage, User loginUser);
 
 }

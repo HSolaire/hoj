@@ -76,7 +76,8 @@ public class TopicSubmitController {
         if (topicSubmit == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
-        return ResultUtils.success(topicSubmitService.getTopicSubmitVO(topicSubmit, request));
+        final User loginUser = userService.getLoginUser(request);
+        return ResultUtils.success(topicSubmitService.getTopicSubmitVO(topicSubmit, loginUser));
     }
 
     /**
@@ -95,7 +96,8 @@ public class TopicSubmitController {
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
         Page<TopicSubmit> topicSubmitPage = topicSubmitService.page(new Page<>(current, size),
                 topicSubmitService.getQueryWrapper(topicSubmitQueryRequest));
-        return ResultUtils.success(topicSubmitService.getTopicSubmitVOPage(topicSubmitPage, request));
+        final User loginUser = userService.getLoginUser(request);
+        return ResultUtils.success(topicSubmitService.getTopicSubmitVOPage(topicSubmitPage, loginUser));
     }
 
 }

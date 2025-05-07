@@ -122,59 +122,28 @@ public class TopicSubmitServiceImpl extends ServiceImpl<TopicSubmitMapper, Topic
 
     // 重要，传topicSubmit而不是topicSubmitRequest是MybatisPlus直接有getById的方法
     @Override
-    public TopicSubmitVO getTopicSubmitVO(TopicSubmit topicSubmit, HttpServletRequest request) {
+    public TopicSubmitVO getTopicSubmitVO(TopicSubmit topicSubmit, User loginUser) {
         TopicSubmitVO topicSubmitVO = TopicSubmitVO.objToVo(topicSubmit);
-        User loginUser = userService.getLoginUser(request);
         Long userId = topicSubmit.getUserId();
-
         // 脱敏：只有管理员或用户本人才能看到写的代码
-        if (loginUser.getId() != userId && userService.isAdmin(request)) {
+        if (loginUser.getId() != userId && !userService.isAdmin(loginUser)) {
             topicSubmitVO.setCode(null);
         }
-
-        // 1. 关联查询用户信息
-        User user = null;
-        if (userId != null && userId > 0) {
-            user = userService.getById(userId);
-        }
-
-        UserVO userVO = userService.getUserVO(user);
-        topicSubmitVO.setUser(userVO);
-
-        // 2. 关联题目信息
-        Long topicId = topicSubmit.getTopicId();
-        Topic topic = null;
-        if (topicId != null && topicId > 0) {
-            topic = topicService.getById(topicId);
-        }
-        TopicVO topicVO = TopicVO.objToVo(topic);
-        topicSubmitVO.setTopic(topicVO);
         return topicSubmitVO;
     }
 
     @Override
-    public Page<TopicSubmitVO> getTopicSubmitVOPage(Page<TopicSubmit> topicSubmitPage, HttpServletRequest request) {
+    public Page<TopicSubmitVO> getTopicSubmitVOPage(Page<TopicSubmit> topicSubmitPage, User loginUser) {
         List<TopicSubmit> topicSubmitList = topicSubmitPage.getRecords();
         Page<TopicSubmitVO> topicSubmitVOPage = new Page<>(topicSubmitPage.getCurrent(), topicSubmitPage.getSize(), topicSubmitPage.getTotal());
         if (CollUtil.isEmpty(topicSubmitList)) {
             return topicSubmitVOPage;
         }
-        // 1. 关联查询用户信息 (可能会有多个用户吗 ？？？)
-        Set<Long> userIdSet = topicSubmitList.stream().map(TopicSubmit::getUserId).collect(Collectors.toSet());
-        Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
-                .collect(Collectors.groupingBy(User::getId));
-        // 填充信息
-        List<TopicSubmitVO> topicSubmitVOList = topicSubmitList.stream().map(topicSubmit -> {
-            TopicSubmitVO topicSubmitVO = TopicSubmitVO.objToVo(topicSubmit);
-            Long userId = topicSubmit.getUserId();
-            User user = null;
-            if (userIdUserListMap.containsKey(userId)) {
-                user = userIdUserListMap.get(userId).get(0);
-            }
-            topicSubmitVO.setUser(userService.getUserVO(user));
-            topicSubmitVO.setCode(null);
-            return topicSubmitVO;
-        }).collect(Collectors.toList());
+
+        // 不涉及到 循环调用数据库
+        List<TopicSubmitVO> topicSubmitVOList = topicSubmitList.stream()
+                .map(topicSubmit -> getTopicSubmitVO(topicSubmit, loginUser))
+                .collect(Collectors.toList());
         topicSubmitVOPage.setRecords(topicSubmitVOList);
         return topicSubmitVOPage;
     }
