@@ -60,7 +60,7 @@ public class TopicController {
             topic.setTags(JSONUtil.toJsonStr(tags));
         }
 
-        List<JudgeConfig> judgeConfig = topicAddRequest.getJudgeConfig();
+        JudgeConfig judgeConfig = topicAddRequest.getJudgeConfig();
         if (judgeConfig != null) {
             topic.setJudgeConfig(JSONUtil.toJsonStr(judgeConfig));
         }
@@ -123,7 +123,7 @@ public class TopicController {
             topic.setTags(JSONUtil.toJsonStr(tags));
         }
 
-        List<JudgeConfig> judgeConfig = topicUpdateRequest.getJudgeConfig();
+        JudgeConfig judgeConfig = topicUpdateRequest.getJudgeConfig();
         if (judgeConfig != null) {
             topic.setJudgeConfig(JSONUtil.toJsonStr(judgeConfig));
         }
@@ -178,7 +178,7 @@ public class TopicController {
     }
 
     /**
-     * 分页获取列表（封装类）
+     * 分页获取列表（封装类 公共）
      *
      * @param topicQueryRequest
      * @param request
@@ -197,7 +197,7 @@ public class TopicController {
     }
 
     /**
-     * 分页获取当前用户创建的资源列表
+     * 分页获取当前用户创建的资源列表 （本人已创建）
      *
      * @param topicQueryRequest
      * @param request

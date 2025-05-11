@@ -52,7 +52,7 @@ public class TopicUpdateRequest implements Serializable {
     /**
      * 判题配置（json 对象）
      */
-    private List<JudgeConfig> judgeConfig;
+    private JudgeConfig judgeConfig;
 
     /**
      * 判题用例（json 对象）
