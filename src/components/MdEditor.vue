@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Editor :value="props.value" :plugins="plugins" @change="handleChange" />
+    <Editor
+      style="width: 600px"
+      :value="props.value"
+      :plugins="plugins"
+      @change="handleChange"
+    />
   </div>
 </template>
 
@@ -11,11 +16,11 @@ import math from "@bytemd/plugin-math";
 import { Editor, Viewer } from "@bytemd/vue-next";
 import { defineProps, defineEmits } from "vue";
 
-const emit = defineEmits(["update:value"]);
+const emit = defineEmits(["update:value", "change"]);
 const props = defineProps({
   value: {
     type: String,
-    default: "// Start edit...\n",
+    default: "// 请编辑 ...\n",
   },
 });
 
@@ -28,6 +33,7 @@ const plugins = [
 
 const handleChange = (v: string) => {
   emit("update:value", v);
+  emit("change");
 };
 </script>
 

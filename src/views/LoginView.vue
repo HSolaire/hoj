@@ -28,10 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import store from "@/store";
 import { Message } from "@arco-design/web-vue";
 import router from "@/router";
+import { useRoute } from "vue-router";
+
+const routers = useRoute();
 
 interface FormData {
   userAccount: string;
@@ -45,12 +48,17 @@ const form = reactive<FormData>({
   rememberMe: false,
 });
 
+onMounted(async () => {
+  const code = await store.dispatch("user/resetLoginUser");
+  // router 后续讨论
+  if (code === 0) await router.push((routers.query.redirect as string) || "/");
+});
+
 const handleSubmit = () => {
   store
     .dispatch("user/loginHandle", form)
     .then((res) => {
-      Message.info(JSON.stringify(res));
-      router.push("/home");
+      router.push((routers.query.redirect as string) || "/");
     })
     .catch((res) => {
       Message.error(res);

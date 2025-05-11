@@ -25,20 +25,18 @@ export default {
   min-height: 100vh;
 }
 
-#layout .header {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 #layout .content {
   padding: 24px 72px;
-  background-color: #ccc;
+  background-color: #fafafa;
+}
+
+.header {
+  z-index: 8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 #layout .footer {
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  background-color: #f7f8fa;
   text-align: center;
   padding: 10px;
 }

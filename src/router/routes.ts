@@ -29,7 +29,7 @@ export const menuRoutes: Array<RouteRecordRaw> = [
     redirect: "home",
     children: [
       {
-        path: "/addTopic",
+        path: "/add/topic",
         name: "创建题目",
         component: () => import("@/views/topic/AddTopicView.vue"),
         meta: {

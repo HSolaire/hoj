@@ -24,19 +24,13 @@
       </a-col>
 
       <a-col class="user" flex="100px">
-        <a-button
-          type="primary"
-          shape="circle"
-          icon="plus"
-          size="small"
-          @click="getLoginUser"
-        >
-          测试获取用户
+        <a-button type="primary" icon="plus" size="small" @click="getLoginUser">
+          测试获取用户接口
         </a-button>
       </a-col>
 
       <a-col
-        v-if="store.state.user.loginUser?.userName === undefined"
+        v-if="(store.state.user.loginUser?.userName || '') === ''"
         class="user"
         flex="100px"
       >
@@ -92,7 +86,6 @@ const doMenuClick = (key: string) => {
 const getLoginUser = () => {
   UserControllerService.getLoginUserUsingGet().then((user) => {
     Message.info(JSON.stringify(user));
-    console.log(user);
   });
 };
 </script>
