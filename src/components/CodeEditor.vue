@@ -1,5 +1,5 @@
 <template>
-  <div ref="editorContainer" class="monaco-editor"></div>
+  <div ref="editorContainer" class="monaco-editor" style="height: 400px"></div>
 </template>
 
 <script lang="ts" setup>
@@ -26,6 +26,10 @@ const props = defineProps({
   theme: {
     type: String,
     default: "vs-dark",
+  },
+  height: {
+    type: Number,
+    default: 600,
   },
 });
 const emit = defineEmits(["update:modelValue"]);

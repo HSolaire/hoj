@@ -45,15 +45,16 @@
 
 <script setup lang="ts">
 import { menuRoutes } from "@/router/routes";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { computed, onBeforeUpdate, onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import roleCheck from "@/access/accessControl";
 import { UserControllerService } from "@/../generated";
 import { Message } from "@arco-design/web-vue";
-import { looseIndexOf } from "@vue/shared";
+import * as path from "node:path";
 
 const router = useRouter();
+const route = useRoute();
 const store = useStore();
 
 const visibleRoutes = computed(() => {
@@ -65,15 +66,15 @@ const visibleRoutes = computed(() => {
   });
 });
 
-const selectKeys = ref(["/home"]);
+const selectKeys = ref(["/describe/scan"]);
 
 // todo 重要 仅刷新触发
 router.isReady().then(() => {
-  selectKeys.value = [router.currentRoute.value.path];
+  selectKeys.value = [route.matched[route.matched.length - 1].path];
 });
 
 router.afterEach((to) => {
-  selectKeys.value = [to.path];
+  selectKeys.value = [to.matched[to.matched.length - 1].path];
 });
 
 // 菜单绑定跳转

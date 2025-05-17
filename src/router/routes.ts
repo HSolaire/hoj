@@ -14,7 +14,7 @@ export const basicRoutes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "登录页",
-    component: () => import("@/views/LoginView.vue"),
+    component: () => import("@/views/LoginIndex.vue"),
     meta: {
       showInMenu: false,
     },
@@ -24,12 +24,21 @@ export const basicRoutes: Array<RouteRecordRaw> = [
 export const menuRoutes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "主页",
     component: BasicLayout,
-    redirect: "home",
+    redirect: "topic/scan",
     children: [
       {
-        path: "/add/topic",
+        path: "/topic/scan",
+        name: "浏览题目",
+        component: () => import("../views/TopicView.vue"),
+      },
+      {
+        path: "/topic/subRecord",
+        name: "提交记录",
+        component: () => import("../views/HomeView.vue"),
+      },
+      {
+        path: "/topic/add",
         name: "创建题目",
         component: () => import("@/views/topic/AddTopicView.vue"),
         meta: {
@@ -37,13 +46,26 @@ export const menuRoutes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "/home",
-        name: "浏览题目",
-        component: () => import("../views/HomeView.vue"),
+        path: "/topic/update/:id",
+        name: "更新题目",
+        component: () => import("@/views/topic/AddTopicView.vue"),
+        meta: {
+          role: ROLE_ENUM.USER,
+          showInMenu: false,
+        },
       },
       {
-        path: "/about",
-        name: "关于我的",
+        path: "/topic/do/:id",
+        name: "在线做题",
+        component: () => import("@/views/topicdo/TopicDoView.vue"),
+        meta: {
+          role: ROLE_ENUM.USER,
+          showInMenu: false,
+        },
+      },
+      {
+        path: "/main",
+        name: "主页",
         component: () => import("../views/AboutView.vue"),
         meta: {
           role: ROLE_ENUM.USER,
