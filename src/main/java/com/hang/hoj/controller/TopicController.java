@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 题目接口
@@ -144,6 +145,29 @@ public class TopicController {
     }
 
     /**
+     * 根据 id 获取 (仅本人或管理员)
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/get")
+    public BaseResponse<Topic> getTopicById(long id, HttpServletRequest request) {
+        if (id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Topic topic = topicService.getById(id);
+        if (topic == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        if (!Objects.equals(topic.getUserId(), loginUser.getId()) && !userService.isAdmin(loginUser)) {
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
+        }
+        return ResultUtils.success(topic);
+    }
+
+
+    /**
      * 根据 id 获取
      *
      * @param id
@@ -254,5 +278,13 @@ public class TopicController {
         boolean result = topicService.updateById(topic);
         return ResultUtils.success(result);
     }
+
+    /**
+     * 普通用户
+     */
+
+    /**
+     * 管理员
+     */
 
 }
