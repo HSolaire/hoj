@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,12 +29,20 @@ public class JudgeServiceTest {
 
     @Test
     void testList() {
-        codeSandboxList.forEach(s -> s.executeCode(null));
+        codeSandboxList.forEach(s -> {
+            try {
+                s.executeCode(null);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
 
     @Test
-    void testCodeSandbox() {
+    void testCodeSandbox() throws IOException, InterruptedException {
         CodeSandbox codeSandbox = CodeSandboxFactory.newInstance(type);
         ExecuteCodeRequest codeRequest = ExecuteCodeRequest.builder()
                 .code("1+1")
