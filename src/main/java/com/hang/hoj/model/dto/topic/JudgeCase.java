@@ -1,6 +1,8 @@
 package com.hang.hoj.model.dto.topic;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Author: HSolaire
@@ -9,6 +11,8 @@ import lombok.Data;
  * 题目用例
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class JudgeCase {
 
     /**

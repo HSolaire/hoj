@@ -3,6 +3,7 @@ package com.hang.hoj.judge.sandbox.impl;
 import com.hang.hoj.judge.model.ExecuteCodeRequest;
 import com.hang.hoj.judge.model.ExecuteCodeResponse;
 import com.hang.hoj.judge.sandbox.CodeSandbox;
+import com.hang.hoj.model.dto.topic.JudgeCase;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -10,14 +11,15 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 /**
- * Author: HSolaire
- * Date: 2025/5/17 21:25
+ * @author hsolaire
+ * @date 2025-05-30 00:16
  */
 @Service
-public class ExampleCodeSandbox implements CodeSandbox {
+public class LocalCodeSandbox implements CodeSandbox {
+
+
     @Override
-    public ExecuteCodeResponse executeCode(ExecuteCodeRequest request) throws IOException {
-        System.out.println("示例代码沙箱");
+    public ExecuteCodeResponse executeCode(ExecuteCodeRequest request) throws IOException, InterruptedException {
         File compileFile = null;
         File binaryFile = null;
         Process compileProcess = null;
@@ -49,17 +51,19 @@ public class ExampleCodeSandbox implements CodeSandbox {
                 runProcess = Runtime.getRuntime().exec("java -cp /Users/hsola/Coder/Data/ Main");
 
                 // 循环提供输入，测试用例是否正确
-
-
-
-                int runVal = runProcess.waitFor();
-                if (runVal == 0) {
-                    System.out.println("Main.java Success Run!");
-                    readInputStream(runProcess.getInputStream());
-                    // 4. 利用输出流，把测试用例写入程序
-                } else {
-                    System.out.println("Main.java Failure Run!");
-                    readInputStream(runProcess.getErrorStream());
+                for (JudgeCase judgeCase : request.getJudgeCaseList()) {
+                    writeToOutputStream(runProcess.getOutputStream(), judgeCase.getInput() + "\n");
+                    String result = readInputStream(runProcess.getInputStream());
+                    System.out.println(result);
+                    int runVal = runProcess.waitFor();
+                    if (runVal == 0) {
+                        System.out.println("Main.java Success Run!");
+                        readInputStream(runProcess.getInputStream());
+                        // 4. 利用输出流，把测试用例写入程序
+                    } else {
+                        System.out.println("Main.java Failure Run!");
+                        readInputStream(runProcess.getErrorStream());
+                    }
                 }
             } else {
                 System.out.println("Main.java Failure Compile!");
@@ -89,18 +93,26 @@ public class ExampleCodeSandbox implements CodeSandbox {
         return null;
     }
 
-    void readInputStream(InputStream in) throws IOException {
-        try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-        ) {
-            String line;
-            // 输出正常信息
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    String readInputStream(InputStream in) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+        StringBuffer sb = new StringBuffer();
+        String line;
+        // 输出正常信息
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
         }
+        return sb.length() == 0 ? null : sb.deleteCharAt(sb.length() - 1).toString();
     }
 
+    /**
+     * 将字符串写入 OutputStream
+     */
+    void writeToOutputStream(OutputStream outputStream, String str) {
+        try {
+            outputStream.write(str.getBytes());
+            outputStream.flush();
+        } catch (IOException e) {
+            System.err.println("Error writing to OutputStream: " + e.getMessage());
+        }
+    }
 }
